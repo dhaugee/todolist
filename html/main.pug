@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        link(rel='stylesheet' type='text/css' href='css/main.css')
+        title To-Do
+        link(rel='icon' type='image/x-icon' href='media/favicons/check.png')
+    body 
+        h2 My To Do List
+        #addItemForm.newItemForm
+            input#newItemTitle(type='text' placeholder='Title...')
+            input#newItemDate(type='date' placeholder='dd-mm-yyyy')
+            //- span.newItemBtn(onclick='newItem()') Add
+            input#newItemButton(type='submit', value='Add')
+            
