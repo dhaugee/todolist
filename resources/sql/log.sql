@@ -3,7 +3,6 @@
 CREATE TABLE Items (
     ID INT AUTO_INCREMENT PRIMARY KEY, -- Probably good to have for identifying items 
     title VARCHAR(250) NOT NULL,
-    description TEXT, -- Not needed but might make optional
     deadline DATETIME NOT NULL,
     complete BOOLEAN NOT NULL, -- Should always be initialized to false
 );

@@ -6,10 +6,36 @@ html
         title To-Do
         link(rel='icon' type='image/x-icon' href='media/favicons/check.png')
     body 
-        h2 My To Do List
+        h1 My To-Do List
+        h2 Add an item:
         #addItemForm.newItemForm
-            input#newItemTitle(type='text' placeholder='Title...')
-            input#newItemDate(type='date' placeholder='dd-mm-yyyy')
-            //- span.newItemBtn(onclick='newItem()') Add
-            input#newItemButton(type='submit', value='Add')
-            
+            label#newItemTitleLabel(for="newItemTitle") Name it: 
+            input#newItemTitle(type='text' placeholder='Title...' required='') 
+            br
+            label#newItemDeadlineLabel(for="newItemDeadline") Deadline: 
+            input#newItemDeadline(type='date' onfocus='disablePastDates()' required='')
+            br
+            button#newItemButton(onclick='submitItem()' type='submit') Add
+        br
+        #toDoListFlex.items
+            #incompleteFlex
+                    each item in toDoList
+                        if item["complete"] == 0
+                            .incompleteItem
+                                .incompleteItemTitle
+                                    | TASK: #{item["title"]}
+                                .incompleteItemDeadline
+                                    | DEADLINE: #{item["deadline"].toString().slice(0,15)}
+                                br
+            #completeFlex
+                each item in toDoList
+                        if item["complete"] == 1
+                            .completedItem
+                                .completedItemTitle
+                                    | TASK: #{item["title"]}
+                                .completedItemDeadline
+                                    | DEADLINE: #{item["deadline"].toString().slice(0,15)};
+                                em COMPLETE
+                                br             
+script(src='../javascript/item.js')
+link(rel='stylesheet' type='text/css' href='../css/main.css')
