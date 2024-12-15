@@ -21,7 +21,7 @@ html
         button#sortByAddedButton(onclick='revertItems()' type='submit') Sort by Order Added
         #toDoListFlex.items
             #incompleteFlex
-                button#overdueButton(onclick='overdueItems()' type='submit') Overdue items only
+                button#overdueButton(onclick='overdueItems()' type='submit') Overdue only
                 button#allItemsButton(onclick='sortItems()' type='submit') All Items
                 each item in toDoList
                     if item["complete"] == 0

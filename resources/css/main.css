@@ -133,6 +133,10 @@ button:hover {
     border-left-color: #3ac42b;
 }
 
+/* .completedItem em {
+
+} */
+
 .incompleteItemTitle, .completedItemTitle {
     padding: .75em;
     font-weight: bold;

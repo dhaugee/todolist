@@ -211,7 +211,7 @@ function renderIncomplete(toDoList){
     overdueButton.id = "overdueButton"
     overdueButton.onclick = function() {overdueItems()}
     overdueButton.type = "submit"
-    overdueButton.innerText = 'Overdue items only'
+    overdueButton.innerText = 'Overdue only'
     existingItems.prepend(overdueButton)
     document.getElementById("newItemTitle").value = '';
     document.getElementById("newItemDeadline").value = '';
