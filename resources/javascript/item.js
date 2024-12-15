@@ -70,7 +70,6 @@ async function overdueItems(){
     }
 }
 
-
 async function checkoffItem(ID){
     const itemID = document.getElementById(ID).value;
     // make a fetch to the submit_item api with the itemData just collected 

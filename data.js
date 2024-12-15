@@ -23,10 +23,6 @@ async function addItem(itemData) {
     return 400;
 }
 
-async function getItem(id) {
-    
-}
-
 async function deleteItem(id) {
     const {itemID} = id;
     if(itemID === ''){
@@ -69,7 +65,6 @@ async function getOverdueItems() {
 
 module.exports = {
     addItem,
-    getItem,
     deleteItem,
     checkoffItem,
     getToDoList,
