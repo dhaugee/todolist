@@ -124,13 +124,13 @@ function renderComplete(toDoList){
 
             const itemTitle = document.createElement("div");
             itemTitle.className = "completedItemTitle"
-            itemTitle.innerText = "TASK: " + toDoList[i]['title'];
+            itemTitle.innerText = toDoList[i]['title'];
             item.appendChild(itemTitle);
 
             const itemDeadline = document.createElement("div");
             // deadline gets converted to string so it must be converted back to a date object before using toString() for formatting:
             const deadline = new Date(toDoList[i]['deadline']); 
-            itemDeadline.innerText = "DEADLINE: " + deadline.toString().slice(0,15);
+            itemDeadline.innerText = deadline.toString().slice(0,15);
             itemDeadline.className = "completedItemDeadline"
             item.appendChild(itemDeadline);
 
@@ -167,13 +167,13 @@ function renderIncomplete(toDoList){
 
             const itemTitle = document.createElement("div");
             itemTitle.className = "incompleteItemTitle"
-            itemTitle.innerText = "TASK: " + toDoList[i]['title'];
+            itemTitle.innerText = toDoList[i]['title'];
             item.appendChild(itemTitle);
 
             const itemDeadline = document.createElement("div");
             // deadline gets converted to string so it must be converted back to a date object before using toString() for formatting:
             const deadline = new Date(toDoList[i]['deadline']); 
-            itemDeadline.innerText = "DEADLINE: " + deadline.toString().slice(0,15);
+            itemDeadline.innerText = deadline.toString().slice(0,15);
             itemDeadline.className = "incompleteItemDeadline"
             item.appendChild(itemDeadline);
 

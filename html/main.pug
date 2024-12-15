@@ -27,9 +27,9 @@ html
                     if item["complete"] == 0
                         .incompleteItem
                             .incompleteItemTitle
-                                | TASK: #{item["title"]}
+                                | #{item["title"]} 
                             .incompleteItemDeadline
-                                | DEADLINE: #{item["deadline"].toString().slice(0,15)}
+                                | #{item["deadline"].toString().slice(0,15)}
                             - var ID = item["ID"]
                             button.itemCheckoffButton(id = ID onclick='checkoffItem('+ID+')' type='submit' value=ID) ✔
                             button.itemDeleteButton(onclick='deleteItem('+ID+')' type='submit' value=ID) DELETE
@@ -39,9 +39,9 @@ html
                         if item["complete"] == 1
                             .completedItem
                                 .completedItemTitle
-                                    | TASK: #{item["title"]}
+                                    | #{item["title"]} 
                                 .completedItemDeadline
-                                    | DEADLINE: #{item["deadline"].toString().slice(0,15)};
+                                    | #{item["deadline"].toString().slice(0,15)}
                                 em COMPLETE 
                                 - var ID = item["ID"]
                                 button.itemDeleteButton(id = ID onclick='deleteItem('+ID+')' type='submit' value=ID) DELETE
