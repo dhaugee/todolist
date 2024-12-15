@@ -22,10 +22,82 @@ async function submitItem(){
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(itemData)});
     // check the status of the result:
-    console.log(result.status);
     if (result.status == 201) {
         const toDoList = await result.json();
-        console.log(typeof toDoList[0]['deadline']);
+        renderToDoList(toDoList); // if valid, rerender the to do list
+    }
+    else if (result.status == 400 || result.status == 500) { // Could be a number of errors
+        alert("Server error detected: Status Code " + result.status);
+    }
+}
+
+async function revertItems(){ 
+    // make a fetch to the submit_item api with the itemData just collected 
+    let result = await fetch('/revert', {method: 'GET'});
+    // check the status of the result:
+    if (result.status == 201) {
+        const toDoList = await result.json();
+        renderToDoList(toDoList); // if valid, rerender the to do list
+    }
+    else if (result.status == 400 || result.status == 500) { // Could be a number of errors
+        alert("Server error detected: Status Code " + result.status);
+    }
+}
+
+async function sortItems(){ 
+    // make a fetch to the submit_item api with the itemData just collected 
+    let result = await fetch('/sorted', {method: 'GET'});
+    // check the status of the result:
+    if (result.status == 201) {
+        const toDoList = await result.json();
+        renderToDoList(toDoList); // if valid, rerender the to do list
+    }
+    else if (result.status == 400 || result.status == 500) { // Could be a number of errors
+        alert("Server error detected: Status Code " + result.status);
+    }
+}
+
+async function overdueItems(){ 
+    // make a fetch to the submit_item api with the itemData just collected 
+    let result = await fetch('/overdue', {method: 'GET'});
+    // check the status of the result:
+    if (result.status == 201) {
+        const toDoList = await result.json();
+        renderOverdueList(toDoList); // if valid, rerender the to do list
+    }
+    else if (result.status == 400 || result.status == 500) { // Could be a number of errors
+        alert("Server error detected: Status Code " + result.status);
+    }
+}
+
+
+async function checkoffItem(ID){
+    const itemID = document.getElementById(ID).value;
+    // make a fetch to the submit_item api with the itemData just collected 
+    let result = await fetch('/api/checkoff_item', 
+        {method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({itemID})});
+    // check the status of the result:
+    if (result.status == 201) {
+        const toDoList = await result.json();
+        renderToDoList(toDoList); // if valid, rerender the to do list
+    }
+    else if (result.status == 400 || result.status == 500) { // Could be a number of errors
+        alert("Server error detected: Status Code " + result.status);
+    }
+}
+
+async function deleteItem(ID){
+    const itemID = document.getElementById(ID).value;
+    // make a fetch to the submit_item api with the itemData just collected 
+    let result = await fetch('/api/delete_item', 
+        {method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({itemID})});
+    // check the status of the result:
+    if (result.status == 201) {
+        const toDoList = await result.json();
         renderToDoList(toDoList); // if valid, rerender the to do list
     }
     else if (result.status == 400 || result.status == 500) { // Could be a number of errors
@@ -36,6 +108,10 @@ async function submitItem(){
 function renderToDoList(toDoList){
     renderIncomplete(toDoList);
     renderComplete(toDoList);
+}
+
+function renderOverdueList(toDoList){
+    renderIncomplete(toDoList);
 }
 
 function renderComplete(toDoList){
@@ -59,19 +135,29 @@ function renderComplete(toDoList){
             item.appendChild(itemDeadline);
 
             const itemComplete = document.createElement("em");
-            itemComplete.innerText = "COMPLETE";
+            itemComplete.innerText = "COMPLETE \n";
             itemComplete.className = "completedItemCheck";
             item.appendChild(itemComplete);
 
-            br = document.createElement("br");
-            item.appendChild(br);
+            const itemDeleteButton = document.createElement("BUTTON");
+            itemDeleteButton.className = "itemDeleteButton"
+            itemDeleteButton.id = toDoList[i]['ID']
+            itemDeleteButton.onclick = function() {deleteItem(String(toDoList[i]['ID']))}
+            itemDeleteButton.type = "submit"
+            itemDeleteButton.innerText = 'DELETE'
+            itemDeleteButton.value = toDoList[i]['ID']
+            item.appendChild(itemDeleteButton);
 
             existingItems.prepend(item); // prepend so that newest items are displayed first
+            
+            br = document.createElement("br");
+            existingItems.prepend(br)
         }
     };
 }
 
 function renderIncomplete(toDoList){
+    console.log("enteringing renderIncomplete()")
     const existingItems = document.getElementById("incompleteFlex");
     existingItems.innerHTML = '';
     for(let i = 0; i < toDoList.length; i++ ) {
@@ -91,12 +177,44 @@ function renderIncomplete(toDoList){
             itemDeadline.className = "incompleteItemDeadline"
             item.appendChild(itemDeadline);
 
-            br = document.createElement("br");
-            item.appendChild(br);
+            const itemCheckoffButton = document.createElement("BUTTON");
+            itemCheckoffButton.className = "itemCheckoffButton"
+            itemCheckoffButton.id = toDoList[i]['ID']
+            itemCheckoffButton.onclick = function() {checkoffItem(String(toDoList[i]['ID']))}
+            itemCheckoffButton.type = "submit"
+            itemCheckoffButton.innerText = '✔'
+            itemCheckoffButton.value = toDoList[i]['ID']
+            item.appendChild(itemCheckoffButton);
+
+            const itemDeleteButton = document.createElement("BUTTON");
+            itemDeleteButton.className = "itemDeleteButton"
+            itemDeleteButton.onclick = function() {deleteItem(String(toDoList[i]['ID']))}
+            itemDeleteButton.type = "submit"
+            itemDeleteButton.innerText = 'DELETE'
+            itemDeleteButton.value = toDoList[i]['ID']
+            item.appendChild(itemDeleteButton);
 
             existingItems.prepend(item); // prepend so that newest items are displayed first
+            
+            br = document.createElement("br");
+            existingItems.prepend(br)
         }
     };
+    console.log("adding buttons")
+    const allItemsButton = document.createElement("BUTTON");
+    allItemsButton.id = "allItemsButton"
+    allItemsButton.onclick = function() {sortItems()}
+    allItemsButton.type = "submit"
+    allItemsButton.innerText = 'All items'
+    existingItems.prepend(allItemsButton)
+
+    const overdueButton = document.createElement("BUTTON");
+    overdueButton.id = "overdueButton"
+    overdueButton.onclick = function() {overdueItems()}
+    overdueButton.type = "submit"
+    overdueButton.innerText = 'Overdue items only'
+    existingItems.prepend(overdueButton)
     document.getElementById("newItemTitle").value = '';
     document.getElementById("newItemDeadline").value = '';
 }
+

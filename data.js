@@ -28,11 +28,28 @@ async function getItem(id) {
 }
 
 async function deleteItem(id) {
-    
+    const {itemID} = id;
+    if(itemID === ''){
+        return 400;
+    }
+    const ItemID = parseInt(itemID)
+    let res = await connPool.awaitQuery("DELETE FROM Items WHERE ID = ?", [ItemID]);
+    if (res.affectedRows === 0){
+        console.log("item with given id could not be found");
+        return 400;
+    }
+    return 201;
 }
 
-async function checkOffItem(id) {
-    
+async function checkoffItem(id) {
+    const {itemID} = id;
+    if(itemID === ''){
+        return 400;
+    }
+    let res = await connPool.awaitQuery('UPDATE Items SET complete = true WHERE ID = ?;', [itemID]);
+    if(res.changedRows != 0){
+        return 201;
+    }
 }
 
 async function getToDoList() {
@@ -40,15 +57,22 @@ async function getToDoList() {
     return res;
 }
 
+async function sortedList() {
+    const res = await connPool.awaitQuery("SELECT * FROM Items ORDER BY deadline");
+    return res;
+}
+
 async function getOverdueItems() {
-    
+    const res = await connPool.awaitQuery("SELECT * FROM Items WHERE complete = false and deadline < CURRENT_DATE() ORDER BY deadline");
+    return res;
 }
 
 module.exports = {
     addItem,
     getItem,
     deleteItem,
-    checkOffItem,
+    checkoffItem,
     getToDoList,
+    sortedList,
     getOverdueItems,
 };

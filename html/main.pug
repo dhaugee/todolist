@@ -17,16 +17,23 @@ html
             br
             button#newItemButton(onclick='submitItem()' type='submit') Add
         br
+        button#sortByDeadlineButton(onclick='sortItems()' type='submit') Sort by Deadline
+        button#sortByAddedButton(onclick='revertItems()' type='submit') Sort by Order Added
         #toDoListFlex.items
             #incompleteFlex
-                    each item in toDoList
-                        if item["complete"] == 0
-                            .incompleteItem
-                                .incompleteItemTitle
-                                    | TASK: #{item["title"]}
-                                .incompleteItemDeadline
-                                    | DEADLINE: #{item["deadline"].toString().slice(0,15)}
-                                br
+                button#overdueButton(onclick='overdueItems()' type='submit') Overdue items only
+                button#allItemsButton(onclick='sortItems()' type='submit') All Items
+                each item in toDoList
+                    if item["complete"] == 0
+                        .incompleteItem
+                            .incompleteItemTitle
+                                | TASK: #{item["title"]}
+                            .incompleteItemDeadline
+                                | DEADLINE: #{item["deadline"].toString().slice(0,15)}
+                            - var ID = item["ID"]
+                            button.itemCheckoffButton(id = ID onclick='checkoffItem('+ID+')' type='submit' value=ID) ✔
+                            button.itemDeleteButton(onclick='deleteItem('+ID+')' type='submit' value=ID) DELETE
+                        br
             #completeFlex
                 each item in toDoList
                         if item["complete"] == 1
@@ -35,7 +42,9 @@ html
                                     | TASK: #{item["title"]}
                                 .completedItemDeadline
                                     | DEADLINE: #{item["deadline"].toString().slice(0,15)};
-                                em COMPLETE
-                                br             
+                                em COMPLETE 
+                                - var ID = item["ID"]
+                                button.itemDeleteButton(id = ID onclick='deleteItem('+ID+')' type='submit' value=ID) DELETE
+                            br             
 script(src='../javascript/item.js')
 link(rel='stylesheet' type='text/css' href='../css/main.css')
